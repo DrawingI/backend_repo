@@ -17,6 +17,7 @@ app.use(bodyParser.json());
 
 app.use('/users', require('./routes/userRoutes.js'));
 app.use('/drawings', require('./routes/drawingRoutes.js'));
+app.use('/child', require('./routes/childRoutes.js'));
 
 //서버 실행
 app.listen(PORT, () => {
