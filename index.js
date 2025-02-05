@@ -1,0 +1,17 @@
+const mysqlDB = require('./database/mysql/models/index.js');
+const connectMongoDB = require('./database/mongodb/config/mongodbConfig');
+const {syncMongoDB, db} = require('./database/mongodb/models/index.js');
+
+//mysql 스키마들을 한번에 담은 db 객체를 sequelize.sync()해서 실제 mysql db에 적용
+// (async () => {
+//     await mysqlDB.sequelize.sync();
+// })();
+
+const mongoDB = async() => {
+    await connectMongoDB();
+    
+    //mongodb models의 index.js 모듈 실행
+    await syncMongoDB();
+};
+
+mongoDB();
