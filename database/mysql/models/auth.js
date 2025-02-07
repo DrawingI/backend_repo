@@ -1,5 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
     const Auth = sequelize.define( 'Auth', {
+        authid : {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+        },
         identityNo : {
             type: DataTypes.STRING,
             allowNull: false
@@ -15,13 +20,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
         tableName : 'authentication',
-        //복합키 설정
-        indexes: [
+        indexes : [
             {
                 unique: true,
-                fields: ['identityNo', 'userid']
+                fields: ['userid', 'identityNo']
             }
-        ],
+        ], 
         timestamps: false
     }
 );
