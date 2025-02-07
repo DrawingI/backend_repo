@@ -20,4 +20,5 @@ module.exports = (sequelize, DataTypes) => {
             as: 'htp_request_from_user_about_child'
         })
     }
+    return HtpRequest;
 }

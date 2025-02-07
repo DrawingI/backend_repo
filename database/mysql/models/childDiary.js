@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
 );
     ChildDiary.associate = (db) => {
         ChildDiary.belongsTo(db.Auth, {
-            foreignKey: 'id',
+            foreignKey: 'authid',
             
             as: 'registerer'
         });
