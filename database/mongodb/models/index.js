@@ -12,4 +12,4 @@ const syncMongoDB = async() =>{
         });
 }
 
-module.exports = {syncMongoDB, db};
+module.exports = syncMongoDB;

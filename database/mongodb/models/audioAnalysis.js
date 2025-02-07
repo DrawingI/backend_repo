@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const audioAnalysisSchema = new mongoose.schema(
+const audioAnalysisSchema = new mongoose.Schema(
     {
         testRequestId : {
             type : String,
