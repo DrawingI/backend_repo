@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         },
        
         Date : {
-            type: DataTypes.Date,
+            type: DataTypes.DATE,
             allowNull: false,
         }
     
@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 );
     ImageData.associate = (db) => {
-        Child.belongsTo(db.HtpRequest, {
+        ImageData.belongsTo(db.HtpRequest, {
             foreignKey: 'id',
            
             as: 'requestid'
