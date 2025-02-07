@@ -17,6 +17,12 @@ const drawingAnalysisSchema = new mongoose.Schema(
             label : {
                 type : String,
                 required : true,
+            },
+            confidence : {
+                type: Number,
+                required: true,
+                min: 0,
+                max: 1
             }
            }
         ]
