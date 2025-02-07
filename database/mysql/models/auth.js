@@ -40,6 +40,10 @@ module.exports = (sequelize, DataTypes) => {
             //회원을 찾을때 쓰는 명칭칭
             as : 'user_in_relation_to_child'
         });
+        Auth.hasMany( db.ChildDiary, {
+            foreignKey : 'authid',
+            as : 'authInfo_in_relation_to_diary'
+        });
     }
     return Auth;
 }
