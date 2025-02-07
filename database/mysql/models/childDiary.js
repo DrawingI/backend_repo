@@ -6,11 +6,11 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey : true,
         },
         authid : {
-            type : DataTypes.String,
+            type : DataTypes.INTEGER,
             allowNull: false,
         },
         date : {
-            type : DataTypes.date,
+            type : DataTypes.Date,
             allowNull: false,
         },
         body : {
