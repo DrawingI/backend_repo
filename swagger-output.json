@@ -1,12 +1,26 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "1.0.0",
-    "title": "REST API",
-    "description": ""
+    "title": "DrawingI API test",
+    "description": "Swagger 자동 문서 생성",
+    "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "localhost:5000",
   "basePath": "/",
+  "tags": [
+    {
+      "name": "/user",
+      "description": "회원관리 api"
+    },
+    {
+      "name": "/drawing",
+      "description": "그림관련 api"
+    },
+    {
+      "name": "/child",
+      "description": "아이관리 api"
+    }
+  ],
   "schemes": [
     "http"
   ],

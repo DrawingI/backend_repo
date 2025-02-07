@@ -23,6 +23,6 @@ const endpointFiles = [
     path.join(__dirname, "./routes/childRoutes.js")
 ];
 
-swaggerAutogen(outputFile, endpointFiles).then(()=>{
+swaggerAutogen(outputFile, endpointFiles, doc).then(()=>{
     console.log("swagger 문서가 생성되었습니다!");
 });
