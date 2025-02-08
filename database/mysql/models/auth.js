@@ -1,17 +1,27 @@
 module.exports = (sequelize, DataTypes) => {
     const Auth = sequelize.define( 'Auth', {
-        authid : {
+        id : {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
         },
         identityNo : {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            references: {
+                model: 'children',
+                key: 'identityNo',
+            },
+            onDelete: 'CASCADE',
         },
         userid : {
             type: DataTypes.INTEGER,
             allowNull: false,
+            references: {
+                model: 'users',
+                key:'id',
+            },
+            onDelete: 'CASCADE',
         },
         relationship : {
             type: DataTypes.ENUM('caretaker','teacher'),
@@ -32,17 +42,21 @@ module.exports = (sequelize, DataTypes) => {
     Auth.associate = (db) => {
         Auth.belongsTo(db.Child, {
             foreignKey : 'identityNo',
-            //아이를 찾을때 쓰는 명칭
-            as : 'children_in_relation_to_user'
+            targetKey : 'identityNo',
+            onDelete: 'CASCADE',
         });
         Auth.belongsTo(db.User, {
             foreignKey : 'userid',
-            //회원을 찾을때 쓰는 명칭칭
-            as : 'user_in_relation_to_child'
+            targetKey: 'id',
+            onDelete: 'CASCADE',
+        });
+        Auth.hasMany(db.HtpRequest, {
+            foreignKey: 'authid',
+            sourceKey: 'id',
         });
         Auth.hasMany( db.ChildDiary, {
             foreignKey : 'authid',
-            as : 'authInfo_in_relation_to_diary'
+            sourceKey: 'id',
         });
     }
     return Auth;

@@ -7,7 +7,11 @@ module.exports = (sequelize, DataTypes) => {
         },
         authid : {
             type: DataTypes.INTEGER,
-            allowNull : false
+            allowNull : false,
+            references: {
+                model: 'authentication',
+                key: 'id',
+            },
         }
     }, {
         tableName: 'htpRequests',
@@ -16,9 +20,13 @@ module.exports = (sequelize, DataTypes) => {
     HtpRequest.associate = (db) => {
         HtpRequest.belongsTo(db.Auth, {
             foreignKey: 'authid',
-            //아이와의 관계에서 생성된 권한을 통한 검사 요청
-            as: 'htp_request_from_user_about_child'
-        })
+            targetKey: 'id',
+            onDelete: 'CASCADE',
+        });
+        HtpRequest.hasMany(db.ImageData, {
+            foreignKey: 'htpRequestId',
+            sourceKey: 'id',
+        });
     }
     return HtpRequest;
 }

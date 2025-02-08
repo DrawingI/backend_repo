@@ -1,13 +1,18 @@
 module.exports = (sequelize, DataTypes) => {
     const ChildDiary = sequelize.define('ChildDiary', {
         
-        identityNo : {
-            type: DataTypes.STRING,
-            primaryKey : true,
+        id : {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
         },
         authid : {
             type : DataTypes.INTEGER,
             allowNull: false,
+            references: {
+                model: 'authentication',
+                key: 'id',
+            },
         },
         date : {
             type : DataTypes.DATE,
@@ -16,18 +21,17 @@ module.exports = (sequelize, DataTypes) => {
         body : {
             type: DataTypes.STRING,
         }
-        
     },
     {
-        tableName : 'childdairy',
+        tableName : 'childdiary',
         timestamps: true,
     }
 );
     ChildDiary.associate = (db) => {
         ChildDiary.belongsTo(db.Auth, {
             foreignKey: 'authid',
-            
-            as: 'registerer'
+            targetKey: 'id',
+            onDelete: 'CASCADE',
         });
         
     }
