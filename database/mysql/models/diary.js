@@ -1,39 +1,40 @@
 module.exports = (sequelize, DataTypes) => {
-    const ChildDiary = sequelize.define('ChildDiary', {
+    const Diary = sequelize.define('Diary', {
         
-        id : {
+        id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
         },
-        authid : {
+        authid: {
             type : DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'authentication',
+                model: 'authorization',
                 key: 'id',
             },
+            onDelete: 'CASCADE',
         },
-        date : {
-            type : DataTypes.DATE,
+        share: {
+            type: DataTypes.BOOLEAN,
             allowNull: false,
-        },
-        body : {
-            type: DataTypes.STRING,
         }
     },
     {
-        tableName : 'childdiary',
-        timestamps: true,
+        tableName : 'diary',
+        timestamps: false,
     }
 );
-    ChildDiary.associate = (db) => {
-        ChildDiary.belongsTo(db.Auth, {
+    Diary.associate = (db) => {
+        Diary.hasMany(db.DiaryContent, {
+            foreignKey: 'diaryid',
+            sourceKey: 'id',
+        });
+        Diary.belongsTo(db.Auth, {
             foreignKey: 'authid',
             targetKey: 'id',
             onDelete: 'CASCADE',
         });
-        
     }
-    return ChildDiary;
+    return Diary;
 }

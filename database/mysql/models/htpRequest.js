@@ -9,13 +9,14 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull : false,
             references: {
-                model: 'authentication',
+                model: 'authorization',
                 key: 'id',
             },
+            onDelete : 'CASCADE',
         }
     }, {
         tableName: 'htpRequests',
-        timestamps: false
+        timestamps: true,
     });
     HtpRequest.associate = (db) => {
         HtpRequest.belongsTo(db.Auth, {

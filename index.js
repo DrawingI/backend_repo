@@ -4,7 +4,7 @@ const mysqlDB = require('./database/mysql/models');
 
 //mysql 스키마들을 한번에 담은 db 객체를 sequelize.sync()해서 실제 mysql db에 적용
 (async () => {
-    await mysqlDB.sequelize.sync({alter:true});
+    await mysqlDB.sequelize.sync({force: true});
 })();
 
 // const mongoDB = async() => {
