@@ -23,7 +23,8 @@ module.exports = (sequelize, DataTypes) => {
             references: {
                 model: 'users',
                 key:'id',
-            }
+            },
+            onDelete: 'CASCADE',
         },
         //아이와 아이를 등록하는 회원의 관계 
         relationship : {
@@ -40,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
         Child.belongsTo(db.User, {
             foreignKey: 'userid',
             targetKey: 'id',
+            onDelete: 'CASCADE',
         });
         Child.hasMany(db.Auth, {
             foreignKey: 'identityNo',
