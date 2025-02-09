@@ -24,6 +24,8 @@ fs
     db[model.name] = model;
   });
 
+  console.log("DB Models: ", Object.keys(db));
+
 //각 모듈마다 db[modelName] associate 메소드가 있다면 해당 메소드에 db 객체를 보내 관계를 db 객체에 설정.
 Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {

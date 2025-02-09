@@ -29,14 +29,14 @@ module.exports = (sequelize, DataTypes) => {
         }
     },
     {
-        tableName : 'authentication',
+        tableName : 'authorization',
         indexes : [
             {
                 unique: true,
-                fields: ['userid', 'identityNo']
+                fields: ['userid', 'identityNo'],
             }
         ], 
-        timestamps: false
+        timestamps: false,
     }
 );
     Auth.associate = (db) => {
@@ -54,7 +54,7 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey: 'authid',
             sourceKey: 'id',
         });
-        Auth.hasMany( db.ChildDiary, {
+        Auth.hasMany( db.Diary, {
             foreignKey : 'authid',
             sourceKey: 'id',
         });

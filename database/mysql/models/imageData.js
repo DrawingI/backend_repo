@@ -12,7 +12,8 @@ module.exports = (sequelize, DataTypes) => {
             references : {
                 model: 'htpRequests',
                 key: 'id',
-            }
+            },
+            onDelete: 'CASCADE',
         },
         path : {
             type : DataTypes.STRING,
@@ -22,15 +23,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.ENUM('Home', 'Tree', 'Person'),
             allowNull: false,
         },
-       
-        date : {
-            type: DataTypes.DATE,
-            allowNull: false,
-        }
     },
     {
-        tableName : 'imagedata',
-        timestamps: false,
+        tableName : 'imageData',
+        timestamps: true,
     }
 );
     ImageData.associate = (db) => {
