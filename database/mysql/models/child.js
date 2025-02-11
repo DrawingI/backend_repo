@@ -1,8 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
     const Child = sequelize.define('Child', {
-        //주민등록번호 (000000-0000000)
-        identityNo : {
-            type: DataTypes.STRING,
+        id : {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
             primaryKey : true,
         },
         gender : {
@@ -44,8 +44,8 @@ module.exports = (sequelize, DataTypes) => {
             onDelete: 'CASCADE',
         });
         Child.hasMany(db.Auth, {
-            foreignKey: 'identityNo',
-            sourceKey: 'identityNo',
+            foreignKey: 'childid',
+            sourceKey: 'id',
         });
     }
     return Child;

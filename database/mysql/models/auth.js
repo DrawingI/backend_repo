@@ -5,12 +5,12 @@ module.exports = (sequelize, DataTypes) => {
             primaryKey: true,
             autoIncrement: true,
         },
-        identityNo : {
-            type: DataTypes.STRING,
+        childid : {
+            type: DataTypes.INTEGER,
             allowNull: false,
             references: {
                 model: 'children',
-                key: 'identityNo',
+                key: 'id',
             },
             onDelete: 'CASCADE',
         },
@@ -33,7 +33,7 @@ module.exports = (sequelize, DataTypes) => {
         indexes : [
             {
                 unique: true,
-                fields: ['userid', 'identityNo'],
+                fields: ['userid', 'childid'],
             }
         ], 
         timestamps: false,
@@ -41,8 +41,8 @@ module.exports = (sequelize, DataTypes) => {
 );
     Auth.associate = (db) => {
         Auth.belongsTo(db.Child, {
-            foreignKey : 'identityNo',
-            targetKey : 'identityNo',
+            foreignKey : 'childid',
+            targetKey : 'id',
             onDelete: 'CASCADE',
         });
         Auth.belongsTo(db.User, {
