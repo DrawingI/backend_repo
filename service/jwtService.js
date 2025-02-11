@@ -8,6 +8,6 @@ exports.loginToken = async(user) =>{
         process.env.SECRET_KEY,
         {expiresIn: "1h", issuer: "drawingi"}
     );
-    
+
     return token;
 }

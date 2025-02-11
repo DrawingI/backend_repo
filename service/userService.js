@@ -11,3 +11,8 @@ exports.findUser = async(email, password) =>{
     const user = await userRepo.findUser(email, password);
     return user;
 }
+
+exports.findUserByEmail = async(email) => {
+    const user = await userRepo.findUserByEmail(email);
+    return user;
+}

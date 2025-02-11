@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
-app.post('/login', require('./routes/loginRoutes.js'));
+app.use('/login', require('./routes/loginRoutes.js'));
 app.use('/users', require('./routes/userRoutes.js'));
 app.use('/drawings', require('./routes/drawingRoutes.js'));
 app.use('/child', require('./routes/childRoutes.js'));
