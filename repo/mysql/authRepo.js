@@ -1,6 +1,6 @@
 const db = require('../../database/mysql/models');
 
-exports.createAuth = async(identityNo, userid, relationship) => {
-    const newAuth = await db.Auth.create({identityNo, userid, relationship});    
+exports.createAuth = async( childid, userid, relationship) => {
+    const newAuth = await db.Auth.create({childid, userid, relationship});    
     return newAuth;
 }

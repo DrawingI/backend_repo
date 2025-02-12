@@ -1,6 +1,6 @@
 const authRepo = require('../repo/mysql/authRepo');
 
-exports.createAuth = async(identityNo, userid, relationship) => {
-    const newAuth = await authRepo.createAuth(identityNo, userid, relationship);
+exports.createAuth = async(childid, userid, relationship) => {
+    const newAuth = await authRepo.createAuth(childid, userid, relationship);
     return newAuth;
 }
