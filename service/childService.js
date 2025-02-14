@@ -7,7 +7,7 @@ exports.createChild = async(gender, name, profImgUrl, userid, relationship) => {
     return {newChild, newAuth};
 }
 
-exports.verifyRegisterer = async(id, userid) => {
+exports.findChild = async(id, userid) => {
     const child = await childRepo.findChild(id, userid);
     return child;
 }

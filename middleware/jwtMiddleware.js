@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 exports.loginJwt = (req, res, next) => {
-    const header = req.headers.loginJwt;
+    const header = req.headers.authorization;
     if(!header){
         return res.status(401).json({message: "Access denied. No token provided."});
     }
@@ -10,7 +10,7 @@ exports.loginJwt = (req, res, next) => {
     const token = header.startsWith("Bearer ") ? header.split(" ")[1] : header;
 
     try{
-        req.user = jwt.verify(token, process.env.CHILD_KEY);
+        req.user = jwt.verify(token, process.env.LOGIN_KEY);
         next();
     }catch(error){
         if(error.name === "TokenExpiredError"){

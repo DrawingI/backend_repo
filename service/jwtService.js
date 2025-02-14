@@ -4,7 +4,7 @@ require('dotenv').config();
 exports.loginToken = async(user) =>{
 
     const token = jwt.sign(
-        {type: "JWT", "email": user.email, "password": user.password},
+        {type: "JWT", "email": user.email, "password": user.password, "id": user.id, "username": user.username},
         process.env.LOGIN_KEY,
         {expiresIn: "1h", issuer: "drawingi"}
     );

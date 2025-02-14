@@ -5,7 +5,7 @@ exports.createChild = async(gender, name, profImgUrl, userid, relationship) => {
     return newChild;
 }
 
-exports.verifyRegisterer = async(id, userid) =>{
+exports.findChild = async(id, userid) =>{
     const child = await db.Child.findOne({
         where : {id, userid}
     });

@@ -1,6 +1,7 @@
 const childService = require('../service/childService');
 const authService = require('../service/authService');
 const jwtService = require('../service/jwtService');
+const userService = require('../service/userService');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -9,9 +10,9 @@ exports.createChild = async(req, res) => {
     try{
         const { gender, name, profImgUrl, userid, relationship } = req.body;
         const {newChild, newAuth} = await childService.createChild(gender, name, profImgUrl, userid, relationship);
-        res.status(201).json({message: '✅ Child and relationship with child created successfully', child: newChild, auth: newAuth});
+        return res.status(201).json({message: '✅ Child and relationship with child created successfully', child: newChild, auth: newAuth});
     }catch(error){
-        res.status(500).json({message: '❌ Error creating child', error: error.message});
+        return res.status(500).json({message: '❌ Error creating child', error: error.message});
     }
 }
 
@@ -21,7 +22,7 @@ exports.createChildToken = async(req, res) => {
         const { id, userid } = req.body;
         if( !id || !userid){return res.status(400).json({message: 'no childid or userid'});}
 
-        const child = await childService.verifyRegisterer(id, userid);
+        const child = await childService.findChild(id, userid);
         if(!child){ return res.status(400).json({message: 'only registerer of child can generate token'});}
         
         const token = await jwtService.childToken(child);
@@ -41,12 +42,17 @@ exports.getChild = async(req, res) =>{
     }
 
     try{
-        const child = jwt.verify(token, process.env.ChILD_KEY);
-        const auth = authService.createAuth(child.id, child.userid, relationship);
-        
-        if(!auth){ return res.status(400).json({message: "Already have access to this child."});}
+        const child = jwt.verify(token, process.env.CHILD_KEY);
 
-        return res.status(200).json({message: "✅ successfully created authentication for this child", auth: auth});
+        console.log("Decoded User's email: ", req.user.email);
+
+        const authExist = await authService.findOneAuthByIds(child.id, req.user.id);
+        if(authExist){
+            return res.status(400).json({message: "Already have access to this child."});
+        }
+        
+        const newAuth = await authService.createAuth(child.id, req.user.id, relationship);
+        return res.status(200).json({message: "✅ successfully created authorization for this child", auth: newAuth});
 
     }catch(error){
         
