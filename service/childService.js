@@ -6,3 +6,8 @@ exports.createChild = async(gender, name, profImgUrl, userid, relationship) => {
     const newAuth = await authService.createAuth(newChild.id, userid, relationship);
     return {newChild, newAuth};
 }
+
+exports.findChild = async(id, userid) => {
+    const child = await childRepo.findChild(id, userid);
+    return child;
+}
