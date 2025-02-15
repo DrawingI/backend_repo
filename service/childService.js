@@ -16,10 +16,6 @@ exports.verifyChild = async(id, userid) => {
 
 //회원의 모든 아이 찾기
 exports.getAllChildrenByUser = async(auths) => {
-    let children = [];
-    for(let i = 0; i < auths.length; i++){
-        let child = await childRepo.getChildById(auths[i].childid);
-        children[i] = child;        
-    }
+    const children = await childRepo.getAllChildrenByUser(auths);
     return children;
 }

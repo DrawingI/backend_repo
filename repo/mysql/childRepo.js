@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const db = require('../../database/mysql/models');
 
 exports.createChild = async(gender, name, profImgUrl, userid, relationship) => {
@@ -12,9 +13,11 @@ exports.verifyChild = async(id, userid) =>{
     return child;
 }
 
-exports.getChildById= async(id) => {
-    const child = await db.Child.findOne({
-        where : {id}
+exports.getAllChildrenByUser= async(auths) => {
+    const children = await db.Child.findAll({
+        where : {
+            id: {[Op.in]: auths.map(auth=> auth.childid)},
+        }
     });
-    return child;
+    return children;
 }

@@ -81,8 +81,8 @@ exports.getAllChildrenByUser = async(req, res) =>{
 
     }catch(error){
         return res.status(500).json({
-            message: "❌ Error bringing children managed by :", 
-            user: req.user.username,
+            message: "❌ Error bringing children managed by user", 
+            error: error.message
         });
     }
 }
