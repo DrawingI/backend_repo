@@ -1,7 +1,6 @@
 const childService = require('../service/childService');
 const authService = require('../service/authService');
 const jwtService = require('../service/jwtService');
-const userService = require('../service/userService');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
@@ -19,10 +18,9 @@ exports.createChild = async(req, res) => {
 //아이 공유하기 : 아이 등록자인지 확인 후 토큰 발급
 exports.createChildToken = async(req, res) => {
     try{
-        const { id, userid } = req.body;
-        if( !id || !userid){return res.status(400).json({message: 'no childid or userid'});}
+        const id = req.body;
+        const child = await childService.verifyChild(id, req.user.id);
 
-        const child = await childService.findChild(id, userid);
         if(!child){ return res.status(400).json({message: 'only registerer of child can generate token'});}
         
         const token = await jwtService.childToken(child);
@@ -33,8 +31,8 @@ exports.createChildToken = async(req, res) => {
     }
 }
 
-//아이 불러오기: 토큰이 유효한지 확인 후 auth 관계를 생성하지만 만약 존재하는 관계가 있다면 에러 메시지 반환.
-exports.getChild = async(req, res) =>{
+//아이 불러오기: 토큰의 유효한지 확인 후 auth 관계를 생성. 
+exports.getChildByToken = async(req, res) =>{
     const {token, relationship} = req.body;
 
     if(!token || !relationship){
@@ -43,10 +41,8 @@ exports.getChild = async(req, res) =>{
 
     try{
         const child = jwt.verify(token, process.env.CHILD_KEY);
+        const authExist = await authService.getOneAuthByIds(child.id, req.user.id);
 
-        console.log("Decoded User's email: ", req.user.email);
-
-        const authExist = await authService.findOneAuthByIds(child.id, req.user.id);
         if(authExist){
             return res.status(400).json({message: "Already have access to this child."});
         }
@@ -69,5 +65,24 @@ exports.getChild = async(req, res) =>{
         }
         
         return res.status(500).json({message: "❌ Error creating authentication for this child", error: error.message});
+    }
+}
+
+//회원이 관리하는 아이 불러오기
+exports.getAllChildrenByUser = async(req, res) =>{
+    try{
+        const auths = await authService.getAuthsByUserid(req.user.id);
+        const children = await childService.getAllChildrenByUser(auths);
+    
+        return res.status(200).json({
+            message: "✅ children returned",
+            children,
+        });
+
+    }catch(error){
+        return res.status(500).json({
+            message: "❌ Error bringing children managed by :", 
+            user: req.user.username,
+        });
     }
 }

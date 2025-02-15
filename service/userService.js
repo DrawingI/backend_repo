@@ -1,6 +1,7 @@
 const userRepo = require('../repo/mysql/userRepo');
 const jwtService = require('./jwtService');
 
+//회원가입
 exports.createUser = async (username, email, password) => {
     const newUser = await userRepo.createUser(username, email, password);
     const token = await jwtService.loginToken(newUser);
