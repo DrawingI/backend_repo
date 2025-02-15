@@ -6,10 +6,13 @@ exports.createAuth = async(childid, userid, relationship) => {
     return newAuth;
 }
 
-exports.findOneAuthByIds = async(childid, userid) =>{
-    const auth = await authRepo.findOneAuthByIds(childid, userid);
+exports.getOneAuthByIds = async(childid, userid) =>{
+    const auth = await authRepo.getOneAuthByIds(childid, userid);
     return auth;
 }
 
-
+exports.getAuthsByUserid = async(userid) => {
+    const auths = await authRepo.getAuthsByUserid(userid);
+    return auths;
+}
 
