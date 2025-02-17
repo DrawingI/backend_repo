@@ -1,13 +1,22 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const app = express();
 require('dotenv').config();
 
-//mysql을 연동할때 sequelize 객체를 require()만해도 DB 연결이 유지됨
+const express = require('express');
+const http = require('http');
+const {Server} = require('socket.io');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: { origin: "*"}
+})
+const socketService = require('./service/socketService');
+
+//db연동
 const sequelize = require('./database/mysql/config/mysqlConfig.js');
-//mongodb를 연동할떄 직접 실행시켜야 제어가 편하다.
 const connectMongoDB = require('./database/mongodb/config/mongodbConfig.js');
+const { getAuthsByUserid } = require('./service/authService.js');
 connectMongoDB();
 
 const PORT = process.env.PORT || 5000;
@@ -16,12 +25,31 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
+//io를 app에 붙임
+app.set("io", io);
+
+//RestfulAPI
 app.use('/login', require('./routes/loginRoutes.js'));
 app.use('/users', require('./routes/userRoutes.js'));
 app.use('/drawings', require('./routes/drawingRoutes.js'));
 app.use('/child', require('./routes/childRoutes.js'));
 
-//서버 실행
-app.listen(PORT, () => {
+//Websocket
+io.on("connection", (socket) =>{
+    console.log("✅ User connected: ", socket.id);
+
+    socket.on("login", (email) => {
+        socketService.addUserSocket(email, socket.id);
+    })
+
+    socket.on("disconnect", () => {
+        console.log("❌ User disconnected: ", socket.id);
+        socketService.removeUserSocket(socket.id);
+    });
+
+});
+
+//Websocket, RestfulAPI 서버 실행
+server.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
 });
