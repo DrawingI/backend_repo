@@ -1,4 +1,5 @@
 const db = require('../../database/mysql/models');
+const argon2 = require('argon2');
 
 exports.createUser = async (username, email, password) => {
     try {
