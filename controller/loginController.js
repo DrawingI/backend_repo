@@ -6,7 +6,7 @@ exports.login = async(req, res) => {
 
     const user = await userService.findUser(email, password);
 
-    if(!user || user.password != password){
+    if(!user){
         return res.status(401).json({message: "Invalid credentials", user: user});
     }
 
