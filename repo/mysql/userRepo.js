@@ -1,19 +1,35 @@
 const db = require('../../database/mysql/models');
 
 exports.createUser = async (username, email, password) => {
-    const newUser = await db.User.create({username, email, password});
-    return newUser;
-}
+    try {
+        const hashedPassword = await argon2.hash(password); // 비밀번호 해싱
+        const newUser = await db.User.create({
+            username,
+            email,
+            password: hashedPassword
+        });
+        return newUser;
+    } catch (error) {
+        throw new Error('Error creating user: ' + error.message);
+    }
+};
 
 exports.findUser = async(email, password) => {
-    const user = await db.User.findOne({
-        where: {
-            email: email,
-            password: password,
-        }
-    });
-    return user;
-}
+    try {
+        const user = await db.User.findOne({
+            where: {
+                email: email
+            }
+        });
+
+        if (!user) return null; // 사용자가 없으면 null 반환
+
+        const isPasswordValid = await argon2.verify(user.password, password); // 비밀번호 검증
+        return isPasswordValid ? user : null;
+    } catch (error) {
+        throw new Error('Error finding user: ' + error.message);
+    }
+};
 
 exports.findUserByEmail = async(email) => {
     const user = await db.User.findOne({
