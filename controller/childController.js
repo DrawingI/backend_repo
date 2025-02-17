@@ -33,20 +33,21 @@ exports.createChildToken = async(req, res) => {
 
 //아이 불러오기: 토큰의 유효한지 확인 후 auth 관계를 생성. 
 exports.getChildByToken = async(req, res) =>{
-    const {token, relationship} = req.body;
-
-    if(!token || !relationship){
-        return res.status(400).json({message: "Required fields missing."});
-    }
-
     try{
+        const {token, relationship} = req.body;
+    
+        if(!token || !relationship){
+            return res.status(400).json({message: "Required fields missing."});
+        }
+
+        //토큰 확인 후 해당 아이와 이미 존재하는 auth가 존재하는지 확인인
         const child = jwt.verify(token, process.env.CHILD_KEY);
         const authExist = await authService.getOneAuthByIds(child.id, req.user.id);
-
         if(authExist){
             return res.status(400).json({message: "Already have access to this child."});
         }
         
+        //새로운 auth 생성성
         const newAuth = await authService.createAuth(child.id, req.user.id, relationship);
         return res.status(200).json({message: "✅ successfully created authorization for this child", auth: newAuth});
 

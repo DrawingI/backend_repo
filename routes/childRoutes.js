@@ -7,6 +7,6 @@ const {loginJwt} = require('../middleware/jwtMiddleware');
 router.post('/createChild', loginJwt, childController.createChild);
 router.post('/getChildByToken', loginJwt, childController.getChildByToken);
 router.post('/createChildToken', loginJwt, childController.createChildToken);
-router.get('/getAllChildrenByUser', loginJwt, childController.getAllChildrenByUser)
+router.get('/getAllChildrenByUser', loginJwt, childController.getAllChildrenByUser);
 
 module.exports = router;
