@@ -21,3 +21,9 @@ exports.getAuthsByUserid = async(userid) =>{
     return auths;
 }
 
+exports.getAuthsByChildid = async(childid) =>{
+    const auths = await db.Auth.findAll({
+        where:{childid}
+    });
+    return auths;
+}

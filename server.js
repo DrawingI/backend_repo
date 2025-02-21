@@ -16,13 +16,16 @@ const socketService = require('./service/socketService');
 //db연동
 const sequelize = require('./database/mysql/config/mysqlConfig.js');
 const connectMongoDB = require('./database/mongodb/config/mongodbConfig.js');
-const { getAuthsByUserid } = require('./service/authService.js');
 connectMongoDB();
 
 const PORT = process.env.PORT || 5000;
 
 //미들웨어 설정
-app.use(cors());
+app.use(cors({
+    origin:"*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+}));
 app.use(bodyParser.json());
 
 //io를 app에 붙임

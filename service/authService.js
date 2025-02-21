@@ -16,3 +16,9 @@ exports.getAuthsByUserid = async(userid) => {
     return auths;
 }
 
+exports.getAuthsByChildid = async(childid) =>{
+    const auths = await authRepo.getAuthsByChildid(childid);
+    return auths;
+}
+
+
