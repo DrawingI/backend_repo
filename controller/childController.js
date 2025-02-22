@@ -7,8 +7,8 @@ require('dotenv').config();
 //아이 등록하기
 exports.createChild = async(req, res) => {
     try{
-        const { gender, name, profImgUrl, userid, relationship } = req.body;
-        const {newChild, newAuth} = await childService.createChild(gender, name, profImgUrl, userid, relationship);
+        const { gender, name, profImgUrl, relationship } = req.body;
+        const {newChild, newAuth} = await childService.createChild(gender, name, profImgUrl, req.user.id, relationship);
         return res.status(201).json({message: '✅ Child and relationship with child created successfully', child: newChild, auth: newAuth});
     }catch(error){
         return res.status(500).json({message: '❌ Error creating child', error: error.message});
@@ -18,7 +18,7 @@ exports.createChild = async(req, res) => {
 //아이 공유하기 : 아이 등록자인지 확인 후 토큰 발급
 exports.createChildToken = async(req, res) => {
     try{
-        const id = req.body;
+        const { id } = req.body;
         const child = await childService.verifyChild(id, req.user.id);
 
         if(!child){ return res.status(400).json({message: 'only registerer of child can generate token'});}

@@ -9,15 +9,15 @@
   "basePath": "/",
   "tags": [
     {
-      "name": "/user",
+      "name": "회원관리",
       "description": "회원관리 api"
     },
     {
-      "name": "/drawing",
+      "name": "미완성 그림관련 api",
       "description": "그림관련 api"
     },
     {
-      "name": "/child",
+      "name": "아이관리",
       "description": "아이관리 api"
     }
   ],
@@ -25,12 +25,12 @@
     "http"
   ],
   "paths": {
-    "/createUser": {
+    "/users/createUser": {
       "post": {
         "tags": [
-          "/user"
+          "회원관리"
         ],
-        "description": "",
+        "description": "회원가입",
         "parameters": [
           {
             "name": "body",
@@ -41,10 +41,10 @@
                 "username": {
                   "example": "any"
                 },
-                "useremail": {
+                "email": {
                   "example": "any"
                 },
-                "userpassword": {
+                "password": {
                   "example": "any"
                 }
               }
@@ -55,18 +55,21 @@
           "201": {
             "description": "Created"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "500": {
             "description": "Internal Server Error"
           }
         }
       }
     },
-    "/createDrawingAnalysis": {
+    "/drawings/createDrawingAnalysis": {
       "post": {
         "tags": [
-          "/drawing"
+          "미완성 그림관련 api"
         ],
-        "description": "",
+        "description": "mongodb api 예시로 만든거",
         "parameters": [
           {
             "name": "body",
@@ -97,22 +100,24 @@
         }
       }
     },
-    "/createChild": {
+    "/child/createChild": {
       "post": {
         "tags": [
-          "/child"
+          "아이관리"
         ],
-        "description": "",
+        "description": "아이 등록하기",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
             "schema": {
               "type": "object",
               "properties": {
-                "identityNo": {
-                  "example": "any"
-                },
                 "gender": {
                   "example": "any"
                 },
@@ -120,9 +125,6 @@
                   "example": "any"
                 },
                 "profImgUrl": {
-                  "example": "any"
-                },
-                "userid": {
                   "example": "any"
                 },
                 "relationship": {
@@ -136,8 +138,167 @@
           "201": {
             "description": "Created"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "419": {
+            "description": ""
+          },
           "500": {
             "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/child/getChildByToken": {
+      "post": {
+        "tags": [
+          "아이관리"
+        ],
+        "description": "아이 불러오기",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "example": "any"
+                },
+                "relationship": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "419": {
+            "description": ""
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/child/createChildToken": {
+      "post": {
+        "tags": [
+          "아이관리"
+        ],
+        "description": "아이 공유하기 토큰 생성",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "419": {
+            "description": ""
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/child/getAllChildrenByUser": {
+      "get": {
+        "tags": [
+          "아이관리"
+        ],
+        "description": "회원의 모든 아이 반환",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "419": {
+            "description": ""
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/login/": {
+      "post": {
+        "tags": [
+          "회원관리"
+        ],
+        "description": "로그인",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }

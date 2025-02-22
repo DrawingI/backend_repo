@@ -40,6 +40,8 @@ app.use('/login', require('./routes/loginRoutes.js'));
 app.use('/users', require('./routes/userRoutes.js'));
 app.use('/drawings', require('./routes/drawingRoutes.js'));
 app.use('/child', require('./routes/childRoutes.js'));
+
+//RestfulAPI 테스트 경로 : 'http://localhost:5000/swagger'
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //Websocket
