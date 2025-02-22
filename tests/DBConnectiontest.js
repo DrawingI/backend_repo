@@ -1,20 +1,4 @@
-const { Sequelize } = require('sequelize');
-const config = require('../config/mysqlConfig.js'); // config.json 경로 확인
-
-// 환경 설정 (development, test, production 중 선택)
-const env = 'development';
-const dbConfig = config[env];
-
-// Sequelize 인스턴스 생성
-const sequelize = new Sequelize(
-  dbConfig.database,
-  dbConfig.username,
-  dbConfig.password,
-  {
-    host: dbConfig.host,
-    dialect: dbConfig.dialect,
-  }
-);
+const sequelize = require('../database/mysql/config/mysqlConfig'); // config.json 경로 확인
 
 // DB 연결 테스트
 async function testConnection() {
