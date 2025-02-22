@@ -1,8 +1,8 @@
 module.exports = (sequelize, DataTypes) => {
     const Child = sequelize.define('Child', {
-        //예시 : 000000-0000000 (6자리-7자리)
-        identityNo : {
-            type: DataTypes.STRING,
+        id : {
+            type: DataTypes.INTEGER,
+            autoIncrement: true,
             primaryKey : true,
         },
         gender : {
@@ -16,12 +16,17 @@ module.exports = (sequelize, DataTypes) => {
         profImgUrl : {
             type: DataTypes.STRING,
         },
-        //아이 등록자
+        //아이를 등록하는 회원의 id 
         userid : {
             type: DataTypes.INTEGER,
             allowNull: false,
+            references: {
+                model: 'users',
+                key:'id',
+            },
+            onDelete: 'CASCADE',
         },
-        //아이 등록자와의 관계
+        //아이와 아이를 등록하는 회원의 관계 
         relationship : {
             type: DataTypes.ENUM('caretaker', 'teacher'),
             allowNull: false,
@@ -35,12 +40,12 @@ module.exports = (sequelize, DataTypes) => {
     Child.associate = (db) => {
         Child.belongsTo(db.User, {
             foreignKey: 'userid',
-            //아이를 등록한 회원을 db.User에서 찾을때 쓰이는 명칭
-            as: 'registerer'
+            targetKey: 'id',
+            onDelete: 'CASCADE',
         });
         Child.hasMany(db.Auth, {
-            foreignKey: 'identityNo',
-            as: 'relationships'
+            foreignKey: 'childid',
+            sourceKey: 'id',
         });
     }
     return Child;

@@ -1,18 +1,11 @@
-const DrawingAnalysis = require('../database/mongodb/models/drawingAnalysis');
+const drawingService = require('../service/drawingService');
 
 // API to store drawing analysis data
 exports.createDrawingAnalysis = async (req, res) => {
     try {
         const { testRequestId, imagePathUrl, detections } = req.body;
-
-        const newDrawingAnalysis = new DrawingAnalysis({
-            testRequestId,
-            imagePathUrl,
-            detections,
-        });
-
-        await newDrawingAnalysis.save();
-
+        const newDrawingAnalysis = await drawingService.createDrawingAnalysis(testRequestId, imagePathUrl, detections);
+        
         res.status(201).json({
             message: '✅ Drawing analysis data saved successfully',
             data: newDrawingAnalysis,

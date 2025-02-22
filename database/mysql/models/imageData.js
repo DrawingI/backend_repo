@@ -1,13 +1,19 @@
 module.exports = (sequelize, DataTypes) => {
     const ImageData = sequelize.define('ImageData', {
         
-        identityNo : {
-            type: DataTypes.STRING,
+        id : {
+            type: DataTypes.INTEGER,
             primaryKey : true,
+            autoIncrement: true,
         },
-        htpRequestid : {
-            type : DataTypes.STRING,
+        htpRequestId : {
+            type : DataTypes.INTEGER,
             allowNull: false,
+            references : {
+                model: 'htpRequests',
+                key: 'id',
+            },
+            onDelete: 'CASCADE',
         },
         path : {
             type : DataTypes.STRING,
@@ -17,26 +23,19 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.ENUM('Home', 'Tree', 'Person'),
             allowNull: false,
         },
-       
-        Date : {
-            type: DataTypes.DATE,
-            allowNull: false,
-        }
-    
-        
     },
     {
-        tableName : 'imagedata',
-        timestamps: false,
+        tableName : 'imageData',
+        timestamps: true,
     }
 );
     ImageData.associate = (db) => {
         ImageData.belongsTo(db.HtpRequest, {
-            foreignKey: 'id',
-           
-            as: 'requestid'
+            foreignKey: 'htpRequestId',
+            targetKey: 'id',
+            onDelete: 'CASCADE',
         });
-       
     }
+    
     return ImageData;
 }
