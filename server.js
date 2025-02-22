@@ -16,6 +16,10 @@ const socketService = require('./service/socketService');
 //db연동
 const sequelize = require('./database/mysql/config/mysqlConfig.js');
 const connectMongoDB = require('./database/mongodb/config/mongodbConfig.js');
+
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger-output.json");
+
 connectMongoDB();
 
 const PORT = process.env.PORT || 5000;
@@ -36,6 +40,7 @@ app.use('/login', require('./routes/loginRoutes.js'));
 app.use('/users', require('./routes/userRoutes.js'));
 app.use('/drawings', require('./routes/drawingRoutes.js'));
 app.use('/child', require('./routes/childRoutes.js'));
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 //Websocket
 io.on("connection", (socket) =>{
@@ -55,4 +60,5 @@ io.on("connection", (socket) =>{
 //Websocket, RestfulAPI 서버 실행
 server.listen(PORT, "0.0.0.0", () => {
     console.log(`Server is running on http://0.0.0.0:${PORT}`);
+
 });
