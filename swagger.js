@@ -12,7 +12,7 @@ const doc = {
     tags: [
         {name: "회원관리", description: "회원관리 api"},
         {name: "미완성 그림관련 api", description: "그림관련 api"},
-        {name: "아이관리", description: "아이관리 api"}
+        {name: "아이관리", description: "아이 등록, 아이 불러오기, 아이 공유 토큰 생성하기, 회원의 모든 아이 불러오기"}
     ]
 };
 

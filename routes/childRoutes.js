@@ -5,11 +5,14 @@ const {loginJwt} = require('../middleware/jwtMiddleware');
 
 //아이 등록 및 Auth 관계 생성
 router.post('/createChild', loginJwt, 
-    /*  #swagger.tags=['아이관리']
+    /*  
+        #swagger.tags=['아이관리']
         #swagger.path="/child/createChild" 
         #swagger.description='아이 등록하기'
     */
     childController.createChild);
+
+    
 router.post('/getChildByToken', loginJwt, 
     /*  #swagger.tags=['아이관리'] 
         #swagger.path="/child/getChildByToken"

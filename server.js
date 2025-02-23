@@ -3,7 +3,6 @@ require('dotenv').config();
 const express = require('express');
 const http = require('http');
 const {Server} = require('socket.io');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const app = express();
@@ -30,7 +29,8 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
 }));
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 
 //io를 app에 붙임
 app.set("io", io);
