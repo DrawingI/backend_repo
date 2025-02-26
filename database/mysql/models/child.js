@@ -5,6 +5,10 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true,
             primaryKey : true,
         },
+        birthdate : {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
         gender : {
             type : DataTypes.ENUM('female', 'male'),
             allowNull: false,
