@@ -121,6 +121,9 @@
                 "gender": {
                   "example": "any"
                 },
+                "birthdate": {
+                  "example": "any"
+                },
                 "name": {
                   "example": "any"
                 },

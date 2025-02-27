@@ -8,8 +8,8 @@ require('dotenv').config();
 exports.createChild = async(req, res) => {
     try{
         console.log("📥 Incoming Request Body: ", req.body);
-        const { gender, name, profImgUrl, relationship } = req.body;
-        const {newChild, newAuth} = await childService.createChild(gender, name, profImgUrl, req.user.id, relationship);
+        const { gender, birthdate, name, profImgUrl, relationship } = req.body;
+        const {newChild, newAuth} = await childService.createChild(gender, birthdate, name, profImgUrl, req.user.id, relationship);
         return res.status(201).json({message: '✅ Child and relationship with child created successfully', child: newChild, auth: newAuth});
     }catch(error){
         return res.status(500).json({message: '❌ Error creating child', error: error.message});
