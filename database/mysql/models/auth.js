@@ -24,8 +24,10 @@ module.exports = (sequelize, DataTypes) => {
             onDelete: 'CASCADE',
         },
         relationship : {
-            type: DataTypes.ENUM('caretaker','teacher'),
+            type: DataTypes.ENUM('caretaker','teacher', '보호자', '선생님'),
             allowNull: false,
+            charset: "utf8mb4",
+            collate: "utf8mb4_unicode_ci"
         }
     },
     {

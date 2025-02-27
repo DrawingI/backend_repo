@@ -1,8 +1,8 @@
 const { Op } = require('sequelize');
 const db = require('../../database/mysql/models');
 
-exports.createChild = async(gender, name, birthdate, profImgUrl, userid, relationship) => {
-    const newChild = await db.Child.create({gender, name, birthdate, profImgUrl, userid, relationship});
+exports.createChild = async(gender, birthdate, name, profImgUrl, userid, relationship) => {
+    const newChild = await db.Child.create({gender, birthdate, name, profImgUrl, userid, relationship});
     return newChild;
 }
 

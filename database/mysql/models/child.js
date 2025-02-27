@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         },
         gender : {
-            type : DataTypes.ENUM('female', 'male'),
+            type : DataTypes.ENUM('female', 'male', '여자', '남자'),
             allowNull: false,
         },
         name : {
@@ -32,8 +32,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         //아이와 아이를 등록하는 회원의 관계 
         relationship : {
-            type: DataTypes.ENUM('caretaker', 'teacher'),
+            type: DataTypes.ENUM('caretaker', 'teacher', '보호자', '선생님'),
             allowNull: false,
+            charset: "utf8mb4",
+            collate: "utf8mb4_unicode_ci"
         }
     },
     {
