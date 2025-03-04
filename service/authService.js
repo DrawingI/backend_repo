@@ -16,9 +16,14 @@ exports.getAuthsByUserid = async(userid) => {
     return auths;
 }
 
+//채팅 기능때 사용할려고 만듬
 exports.getAuthsByChildid = async(childid) =>{
     const auths = await authRepo.getAuthsByChildid(childid);
     return auths;
 }
 
+exports.deleteAuth = async(childid, userid) =>{
+    const deletedCount = await authRepo.deleteAuth(childid, userid);
+    return deletedCount;
+}
 

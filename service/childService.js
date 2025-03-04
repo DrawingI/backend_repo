@@ -8,7 +8,7 @@ exports.createChild = async(gender, birthdate, name, profImgUrl, userid, relatio
     return {newChild, newAuth};
 }
 
-//아이찾기
+//해당 회원이 해당 아이를 등록했는지 확인
 exports.verifyChild = async(id, userid) => {
     const child = await childRepo.verifyChild(id, userid);
     return child;
@@ -18,4 +18,10 @@ exports.verifyChild = async(id, userid) => {
 exports.getAllChildrenByUser = async(auths) => {
     const children = await childRepo.getAllChildrenByUser(auths);
     return children;
+}
+
+//아이 삭제하기
+exports.deleteChild = async(id) => {
+    const childDeleted = await childRepo.deleteChild(id);
+    return childDeleted;
 }

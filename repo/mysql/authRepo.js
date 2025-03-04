@@ -27,3 +27,10 @@ exports.getAuthsByChildid = async(childid) =>{
     });
     return auths;
 }
+
+exports.deleteAuth = async(childid, userid) =>{
+    const deletedCount = await db.Auth.destroy({
+        where: {childid: childid, userid: userid}
+    });
+    return deletedCount;
+}
