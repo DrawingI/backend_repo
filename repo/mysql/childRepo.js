@@ -21,3 +21,10 @@ exports.getAllChildrenByUser= async(auths) => {
     });
     return children;
 }
+
+exports.deleteChild = async(id) => {
+    const childDeleted = await db.Child.destroy({
+        where : {id}
+    });
+    return childDeleted;
+}

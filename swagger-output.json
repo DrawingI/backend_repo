@@ -273,6 +273,50 @@
         }
       }
     },
+    "/child/deleteChild": {
+      "delete": {
+        "tags": [
+          "아이관리"
+        ],
+        "description": "아이 삭제하기",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "419": {
+            "description": ""
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/login/": {
       "post": {
         "tags": [

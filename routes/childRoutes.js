@@ -19,17 +19,26 @@ router.post('/getChildByToken', loginJwt,
         #swagger.description='아이 불러오기'
     */
     childController.getChildByToken);
+    
 router.post('/createChildToken', loginJwt, 
     /*  #swagger.tags=['아이관리']
         #swagger.path="/child/createChildToken" 
         #swagger.description='아이 공유하기 토큰 생성'
     */
     childController.createChildToken);
+
 router.get('/getAllChildrenByUser', loginJwt, 
     /*  #swagger.tags=['아이관리']
         #swagger.path="/child/getAllChildrenByUser" 
         #swagger.description='회원의 모든 아이 반환'
     */
     childController.getAllChildrenByUser);
+
+router.delete('/deleteChild', loginJwt, 
+    /*  #swagger.tags=['아이관리']
+        #swagger.path="/child/deleteChild"
+        #swagger.description="아이 삭제하기"
+    */
+    childController.deleteChild);
 
 module.exports = router;

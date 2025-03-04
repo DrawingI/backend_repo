@@ -28,7 +28,7 @@ exports.createChildToken = async(req, res) => {
         return res.status(200).json({message: "✅ success in creating token.", token: token});
 
     }catch(error){
-        res.status(500).json({message: '❌ Error creating token for child', error: error.message});
+        return res.status(500).json({message: '❌ Error creating token for child', error: error.message});
     }
 }
 
@@ -85,6 +85,34 @@ exports.getAllChildrenByUser = async(req, res) =>{
         return res.status(500).json({
             message: "❌ Error bringing children managed by user", 
             error: error.message
+        });
+    }
+}
+
+//아이 삭제하기
+exports.deleteChild = async(req, res) => {
+    try{
+        const { id } = req.body;
+
+        const authsDeleted = await authService.deleteAuth(id, req.user.id);
+        if(authsDeleted === 0){
+            return res.status(404).json({
+                message: "nothing to delete"
+            });
+        }
+
+        //아이를 등록한 회원인 경우, 해당 아이가 삭제됨
+        const child = await childService.verifyChild(id, req.user.id);
+        if(child){
+            await childService.deleteChild(id);
+        }
+
+        return res.status(204).send();
+
+    }catch(error){
+        return res.status(500).json({
+            message : "❌ Error deleting auth for child and user", 
+            error: error.message,
         });
     }
 }
