@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
             onDelete : 'CASCADE',
         }
     }, {
-        tableName: 'htpRequests',
+        tableName: 'htpRequest',
         timestamps: true,
     });
     HtpRequest.associate = (db) => {
@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
             targetKey: 'id',
             onDelete: 'CASCADE',
         });
-        HtpRequest.hasMany(db.ImageData, {
+        HtpRequest.hasMany(db.HtpImage, {
             foreignKey: 'htpRequestId',
             sourceKey: 'id',
         });

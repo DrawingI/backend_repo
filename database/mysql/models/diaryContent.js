@@ -14,10 +14,14 @@ module.exports = (sequelize, DataTypes) => {
             },
             onDelete: 'CASCADE',
         },
-        body : {
+        content : {
             type: DataTypes.STRING,
             allowNull : false,
         },
+        is_shared: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
+        }
     },
     {
         tableName : 'diaryContent',
