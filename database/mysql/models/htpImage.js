@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const ImageData = sequelize.define('ImageData', {
+    const HtpImage = sequelize.define('HtpImage', {
         
         id : {
             type: DataTypes.INTEGER,
@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
             type : DataTypes.INTEGER,
             allowNull: false,
             references : {
-                model: 'htpRequests',
+                model: 'htpRequest',
                 key: 'id',
             },
             onDelete: 'CASCADE',
@@ -25,17 +25,17 @@ module.exports = (sequelize, DataTypes) => {
         },
     },
     {
-        tableName : 'imageData',
+        tableName : 'htpImage',
         timestamps: true,
     }
 );
-    ImageData.associate = (db) => {
-        ImageData.belongsTo(db.HtpRequest, {
+    HtpImage.associate = (db) => {
+        HtpImage.belongsTo(db.HtpRequest, {
             foreignKey: 'htpRequestId',
             targetKey: 'id',
             onDelete: 'CASCADE',
         });
     }
     
-    return ImageData;
+    return HtpImage;
 }

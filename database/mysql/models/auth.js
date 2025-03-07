@@ -60,6 +60,14 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey : 'authid',
             sourceKey: 'id',
         });
+        Auth.hasMany(db.Chatroom, {
+            foreignKey: 'authid',
+            sourceKey:'id',
+        });
+        Auth.hasMany(db.ChatroomMember, {
+            foreignKey: 'authid',
+            sourceKey:'id',
+        })
     }
     return Auth;
 }

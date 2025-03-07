@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Diary = sequelize.define('Diary', {
+    const Chatroom = sequelize.define('Chatroom', {
         
         id: {
             type: DataTypes.INTEGER,
@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
             autoIncrement: true,
         },
         authid: {
-            type : DataTypes.INTEGER,
+            type: DataTypes.INTEGER,
             allowNull: false,
             references: {
                 model: 'authorization',
@@ -15,25 +15,29 @@ module.exports = (sequelize, DataTypes) => {
             },
             onDelete: 'CASCADE',
         },
+        name: {
+            type: DataTypes.STRING,
+            allowNull: false, 
+        }
     },
     {
-        tableName : 'diary',
+        tableName : 'chatroom',
         timestamps: false,
         indexes:[
             {fields:['id'], unique: true},
         ]
     }
 );
-    Diary.associate = (db) => {
-        Diary.hasMany(db.DiaryContent, {
-            foreignKey: 'diaryid',
-            sourceKey: 'id',
-        });
-        Diary.belongsTo(db.Auth, {
+    Chatroom.associate = (db) => {
+        Chatroom.belongsTo(db.Auth, {
             foreignKey: 'authid',
             targetKey: 'id',
             onDelete: 'CASCADE',
         });
+        Chatroom.hasMany(db.ChatroomMember, {
+            foreignKey: 'chatroomid',
+            sourceKey: 'id',
+        })
     }
-    return Diary;
+    return Chatroom;
 }
