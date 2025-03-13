@@ -1,3 +1,4 @@
+const {Op} = require('sequelize');
 const db = require('../../database/mysql/models');
 
 exports.createAuth = async(childid, userid, relationship) => {
@@ -21,9 +22,21 @@ exports.getAuthsByUserid = async(userid) =>{
     return auths;
 }
 
-exports.getAuthsByChildid = async(childid) =>{
+exports.getAuthsByChildid = async(childid, userid) =>{
     const auths = await db.Auth.findAll({
-        where:{childid}
+        where:{
+            childid,
+            userid : {[Op.ne]: userid}
+        }
+    });
+    return auths;
+}
+
+exports.getAuthsOfUsers = async(users) => {
+    const auths = await db.Auth.findAll({
+        where:{
+            userid: {[Op.in]: users.map(user=>user.id)}
+        },
     });
     return auths;
 }

@@ -7,8 +7,8 @@ exports.createChat = async(name, authid) => {
     return newChat;
 }
 
-//채팅 참여 회원 더하기
-exports.addMember = async(chatid, authid) => {
-    const newMember = await chatMemberRepo.addMember(chatid, authid);
-    return newMember;
+//채팅방에 여러 회원 더하기
+exports.addMembers = async(chatid, auths) => {
+    const newMembers = await chatMemberRepo.addMembers(chatid, auths);
+    return newMembers;
 }

@@ -12,7 +12,8 @@ const doc = {
     tags: [
         {name: "회원관리", description: "회원관리 api"},
         {name: "미완성 그림관련 api", description: "그림관련 api"},
-        {name: "아이관리", description: "아이 등록, 아이 불러오기, 아이 공유 토큰 생성하기, 회원의 모든 아이 불러오기"}
+        {name: "아이관리", description: "아이 등록, 아이 불러오기, 아이 공유 토큰 생성하기, 회원의 모든 아이 불러오기"},
+        {name: "채팅", description: "채팅관리 api"}
     ]
 };
 
@@ -21,7 +22,8 @@ const endpointFiles = [
     path.join(__dirname, "./routes/userRoutes.js"),
     path.join(__dirname, "./routes/drawingRoutes.js"),
     path.join(__dirname, "./routes/childRoutes.js"),
-    path.join(__dirname, "./routes/loginRoutes.js")
+    path.join(__dirname, "./routes/loginRoutes.js"),
+    path.join(__dirname, "./routes/chatRoutes.js")
 ];
 
 swaggerAutogen(outputFile, endpointFiles, doc).then(()=>{

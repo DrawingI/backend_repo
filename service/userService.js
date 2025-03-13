@@ -19,3 +19,8 @@ exports.findUserByEmail = async(email) => {
     const user = await userRepo.findUserByEmail(email);
     return user;
 }
+
+exports.findUsersToChat = async(auths) => {
+    const users = await userRepo.findUsersToChat(auths);
+    return users;
+}
