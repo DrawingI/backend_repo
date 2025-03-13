@@ -1,16 +1,16 @@
 module.exports = (sequelize, DataTypes) => {
-    const ChatroomMember = sequelize.define('ChatroomMember', {
+    const ChatMember = sequelize.define('ChatMember', {
         
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
         },
-        chatroomid: {
+        chatid: {
             type: DataTypes.INTEGER,
             allowNull: false,
             references: {
-                model: 'chatroom',
+                model: 'chat',
                 key: 'id',
             },
             onDelete: 'CASCADE',
@@ -26,21 +26,21 @@ module.exports = (sequelize, DataTypes) => {
         }
     },
     {
-        tableName : 'chatroomMember',
+        tableName : 'chatMember',
         timestamps: false,
     }
 );
-    ChatroomMember.associate = (db) => {
-        ChatroomMember.belongsTo(db.Chatroom, {
-            foreignKey: 'chatroomid',
+    ChatMember.associate = (db) => {
+        ChatMember.belongsTo(db.Chat, {
+            foreignKey: 'chatid',
             targetKey: 'id',
             onDelete: 'CASCADE',
         });
-        ChatroomMember.belongsTo(db.Auth, {
+        ChatMember.belongsTo(db.Auth, {
             foreignKey: 'authid',
             targetKey:'id',
             onDelete: 'CASCADE',
         })
     }
-    return ChatroomMember;
+    return ChatMember;
 }
