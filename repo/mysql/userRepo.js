@@ -43,10 +43,11 @@ exports.findUserByEmail = async(email) => {
 }
 
 exports.findUsersToChat = async(auths) => {
-    const users = await db.User.findAll({
+    const userids = await db.User.findAll({
         where: {
             id: {[Op.in]: auths.map(auth=> auth.userid)},
-        }
+        },
+        attributes:["id"],
     });
-    return users;
+    return userids;
 }

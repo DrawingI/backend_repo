@@ -22,21 +22,19 @@ exports.getAuthsByUserid = async(userid) =>{
     return auths;
 }
 
-exports.getAuthsByChildid = async(childid, userid) =>{
+exports.getAuthsByChildid = async(childid) =>{
     const auths = await db.Auth.findAll({
-        where:{
-            childid,
-            userid : {[Op.ne]: userid}
-        }
+        where:{childid}
     });
     return auths;
 }
 
-exports.getAuthsOfUsers = async(users) => {
+exports.getSomeAuthsByChildid = async(childid, userids) =>{
     const auths = await db.Auth.findAll({
-        where:{
-            userid: {[Op.in]: users.map(user=>user.id)}
-        },
+        where: {
+            childid,
+            userid: {[Op.in]: userids}
+        }
     });
     return auths;
 }

@@ -21,6 +21,6 @@ exports.findUserByEmail = async(email) => {
 }
 
 exports.findUsersToChat = async(auths) => {
-    const users = await userRepo.findUsersToChat(auths);
-    return users;
+    const userids = await userRepo.findUsersToChat(auths);
+    return userids;
 }

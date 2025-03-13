@@ -15,13 +15,18 @@ exports.getAuthsByUserid = async(userid) => {
     return auths;
 }
 
-exports.getAuthsByChildid = async(childid, userid) =>{
-    const auths = await authRepo.getAuthsByChildid(childid, userid);
+exports.getOtherAuthsByChildid = async(childid, userid) =>{
+    const auths = await authRepo.getAuthsByChildid(childid);
+    return auths.filter(auth => auth.userid !== userid);
+}
+
+exports.getAuthsByChildid = async(childid) =>{
+    const auths = await authRepo.getAuthsByChildid(childid);
     return auths;
 }
 
-exports.getAuthsOfUsers = async(users) => {
-    const auths = await authRepo.getAuthsOfUsers(users);
+exports.getSomeAuthsByChildid = async(childid, userids) =>{
+    const auths = await authRepo.getSomeAuthsByChildid(childid, userids);
     return auths;
 }
 
