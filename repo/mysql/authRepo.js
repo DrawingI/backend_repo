@@ -29,11 +29,14 @@ exports.getAuthsByChildid = async(childid) =>{
     return auths;
 }
 
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!에러에러에러!!
 exports.getSomeAuthsByChildid = async(childid, userids) =>{
+    const formattedUserids = userids.map(user => user.id);
+
     const auths = await db.Auth.findAll({
         where: {
             childid,
-            userid: {[Op.in]: userids}
+            userid: {[Op.in]: formattedUserids}
         }
     });
     return auths;

@@ -18,7 +18,7 @@ exports.findUsersToChat = async(req, res) => {
 }
 
 
-//채팅방 생성하기 : name, childid를 받아서 회원이 아이와 auth가 존재하는지 확인 후 채팅방 생성
+//채팅방 생성하기 : 회원이 아이와의 auth가 있는지 확인, 채팅 멤버 선택해서 채팅에 참여시키기
 exports.createChat = async(req, res)=>{
     try{
         const { name, childid, userids } = req.body;
@@ -27,10 +27,15 @@ exports.createChat = async(req, res)=>{
         if(!auth){
             return res.status(401).json({message : "Auth relationship must exist to create chat"});
         }
-        userids.push(req.user.id);
+        userids.push({id : req.user.id});
+        console.log("userids: ", userids);
         const auths = await authService.getSomeAuthsByChildid(childid, userids);
+        //auths: []
+        console.log("auths: ", auths);
         const newChat = await chatService.createChat(name, auth.id);
         const newMembers = await chatService.addMembers(newChat.id, auths);
+        //newMembers: []
+        console.log("newMembers: ", newMembers);
         
         return res.status(200).json({message : "✅ Successfully created new chat", chat: newChat, members: newMembers});
     }catch(error){
