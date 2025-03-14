@@ -29,7 +29,6 @@ exports.getAuthsByChildid = async(childid) =>{
     return auths;
 }
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!에러에러에러!!
 exports.getSomeAuthsByChildid = async(childid, userids) =>{
     const formattedUserids = userids.map(user => user.id);
 

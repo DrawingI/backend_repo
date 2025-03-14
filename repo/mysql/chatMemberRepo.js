@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const db = require('../../database/mysql/models');
 
 exports.addMembers = async(chatid, auths) =>{
@@ -8,4 +9,22 @@ exports.addMembers = async(chatid, auths) =>{
 
     const newMembers = await db.ChatMember.bulkCreate(newMembersData);
     return newMembers;
+}
+
+exports.getChatsByAuths = async(auths) => {
+    const memberChats = await db.ChatMember.findAll({
+        where: {
+            authid:{[Op.in]: auths.map(auth => auth.id)}
+        }
+    })
+    return memberChats;
+}
+
+exports.getChatsByChatids = async(chatids) => {
+    const chats = await db.Chat.findAll({
+        where: {
+            id: {[Op.in]: chatids}
+        }
+    })
+    return chats;
 }

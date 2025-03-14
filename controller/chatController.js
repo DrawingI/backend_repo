@@ -28,18 +28,37 @@ exports.createChat = async(req, res)=>{
             return res.status(401).json({message : "Auth relationship must exist to create chat"});
         }
         userids.push({id : req.user.id});
-        console.log("userids: ", userids);
         const auths = await authService.getSomeAuthsByChildid(childid, userids);
-        //auths: []
-        console.log("auths: ", auths);
         const newChat = await chatService.createChat(name, auth.id);
         const newMembers = await chatService.addMembers(newChat.id, auths);
-        //newMembers: []
-        console.log("newMembers: ", newMembers);
         
         return res.status(200).json({message : "✅ Successfully created new chat", chat: newChat, members: newMembers});
     }catch(error){
         return res.status(500).json({message: "❌ Cannot create chatroom", error : error.message});
+    }
+}
+
+//회원의 모든 채팅방 불러오기
+exports.findChats = async(req, res) => {
+    try{
+        const auths = await authService.getAuthsByUserid(req.user.id);
+        console.log("auths: ", auths);
+        const memberChats = await chatService.getChatsByAuths(auths);
+        console.log("memberChats: ", memberChats);
+
+        if(!memberChats){
+            return res.status(401).json({message: "No chats exist"});
+        }
+
+        const chatids = memberChats.map(memberChat => memberChat.chatid);
+        console.log("chatids: ", chatids);
+        const chats = await chatService.getChatsByChatids(chatids);
+        console.log("chats: ", chats);
+
+        return res.status(200).json({message: "✅ Chats successfully brought", chats});
+
+    }catch(error){
+        return res.status(500).json({message: "❌ Cannot bring chats for user", error: error.message});
     }
 }
 

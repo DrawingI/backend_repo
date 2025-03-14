@@ -12,3 +12,14 @@ exports.addMembers = async(chatid, auths) => {
     const newMembers = await chatMemberRepo.addMembers(chatid, auths);
     return newMembers;
 }
+
+//회원이 참여하고 있는 모든 채팅방 id 반환
+exports.getChatsByAuths = async(auths) => {
+    const memberChats = await chatMemberRepo.getChatsByAuths(auths);
+    return memberChats;
+}
+
+exports.getChatsByChatids = async(chatids) => {
+    const chats = await chatRepo.getChatsByChatids(chatids);
+    return chats;
+}

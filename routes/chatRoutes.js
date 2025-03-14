@@ -17,5 +17,12 @@ router.post('/createChat', loginJwt,
         #swagger.description='채팅방 만들기'
     */
     chatController.createChat);
+router.get('/findChats', loginJwt, 
+    /*  
+        #swagger.tags=['채팅']
+        #swagger.path="/chat/findChats" 
+        #swagger.description='회원이 참여하는 채팅방 불러오기'
+    */    
+    chatController.findChats);
 
 module.exports = router;
