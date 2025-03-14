@@ -20,11 +20,3 @@ exports.getChatsByAuths = async(auths) => {
     return memberChats;
 }
 
-exports.getChatsByChatids = async(chatids) => {
-    const chats = await db.Chat.findAll({
-        where: {
-            id: {[Op.in]: chatids}
-        }
-    })
-    return chats;
-}
