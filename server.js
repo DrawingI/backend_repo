@@ -49,19 +49,41 @@ app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 io.on("connection", (socket) =>{
     console.log("✅ User connected: ", socket.id);
 
-    socket.on("login", (email) => {
-        socketService.addUserSocket(email, socket.id);
+    socket.on("login", (token) => {
+        socketService.addUserSocket(token, socket.id);
     });
 
-    socket.on("sendMessage", (message) =>{
-
+    socket.on("getUserSocket", async (token) => {
+        try{
+            const socketid = await socketService.getUserSocket(token); 
+            socket.emit("getUserSocketResponse", {success : true, socketid});
+        }catch(error){
+            socket.emit("getUserSocketResponse", {success: false, message: "Error retrieving usser socketid"});
+            console.log("failed to get and emit socketid: ", error);
+        }
     });
 
     socket.on("disconnect", () => {
-        console.log("❌ User disconnected: ", socket.id);
         socketService.removeUserSocket(socket.id);
+        console.log("❌ User disconnected: ", socket.id);
     });
 
+    socket.on("enterChat", (chatid) => {
+        const roomid = chatid.toString();
+        socket.join(roomid);
+        console.log(`✅ User ${socket.id} joined room ${chatid}`);
+
+        //현재 방에 속한 소켓 ID 목록 확인 (디버깅용)
+        io.in(roomid).fetchSockets().then(sockets => {
+            console.log(`🛠 Users in room ${roomid}:`, sockets.map(s => s.id));
+        });
+    });
+
+    socket.on("sendMessage", ({chatid, message}) => {
+        const roomid = chatid.toString();
+        console.log(`📩 Sending message to chat ${roomid}:`, message);
+        io.to(roomid).emit("receiveMessage", message);
+    });
 });
 
 //Websocket, RestfulAPI 서버 실행

@@ -42,24 +42,28 @@ exports.createChat = async(req, res)=>{
 exports.findChats = async(req, res) => {
     try{
         const auths = await authService.getAuthsByUserid(req.user.id);
-        console.log("auths: ", auths);
         const memberChats = await chatService.getChatsByAuths(auths);
-        console.log("memberChats: ", memberChats);
 
         if(!memberChats){
             return res.status(401).json({message: "No chats exist"});
         }
 
         const chatids = memberChats.map(memberChat => memberChat.chatid);
-        console.log("chatids: ", chatids);
         const chats = await chatService.getChatsByChatids(chatids);
-        console.log("chats: ", chats);
 
         return res.status(200).json({message: "✅ Chats successfully brought", chats});
 
     }catch(error){
         return res.status(500).json({message: "❌ Cannot bring chats for user", error: error.message});
     }
+}
+
+//채팅에 참여하고 있는 회원들 불러오기
+exports.findChatMembers = async(req, res) => {
+    const { chatid } = req.body;
+    const chatMembers = await chatService.findChatMembers(chatid);
+    
+
 }
 
 
