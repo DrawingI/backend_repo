@@ -1,5 +1,4 @@
 const authRepo = require('../repo/mysql/authRepo');
-const userService = require('../service/userService');
 
 exports.createAuth = async(childid, userid, relationship) => {
     const newAuth = await authRepo.createAuth(childid, userid, relationship);
@@ -16,9 +15,23 @@ exports.getAuthsByUserid = async(userid) => {
     return auths;
 }
 
-//채팅 기능때 사용할려고 만듬
+exports.getOtherAuthsByChildid = async(childid, userid) =>{
+    const auths = await authRepo.getAuthsByChildid(childid);
+    return auths.filter(auth => auth.userid !== userid);
+}
+
 exports.getAuthsByChildid = async(childid) =>{
     const auths = await authRepo.getAuthsByChildid(childid);
+    return auths;
+}
+
+exports.getSomeAuthsByChildid = async(childid, userids) =>{
+    const auths = await authRepo.getSomeAuthsByChildid(childid, userids);
+    return auths;
+}
+
+exports.getAuthsByAuthids = async(authids) =>{
+    const auths = await authRepo.getAuthsByAuthids(authids);
     return auths;
 }
 

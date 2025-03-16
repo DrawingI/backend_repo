@@ -1,18 +1,18 @@
 const users = new Map();
 
-exports.addUserSocket = (email, socketid) => {
-    users.set(email, socketid);
+exports.addUserSocket = (userid, socketid) => {
+    users.set(userid, socketid);
 };
 
 exports.removeUserSocket = (socketid) => {
-    for(const[email, id] of users.entries()){
+    for(const[userid, id] of users.entries()){
         if(id === socketid){
-            users.delete(email);
+            users.delete(userid);
             break;
         }
     }
 };
 
-exports.getUserSocket = async(email) =>{
-    return users.get(email) || null;
+exports.getUserSocket = async (userid) =>{
+    return users.get(userid) || null;
 }

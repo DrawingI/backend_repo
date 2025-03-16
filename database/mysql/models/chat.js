@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const Chatroom = sequelize.define('Chatroom', {
+    const Chat = sequelize.define('Chat', {
         
         id: {
             type: DataTypes.INTEGER,
@@ -21,23 +21,23 @@ module.exports = (sequelize, DataTypes) => {
         }
     },
     {
-        tableName : 'chatroom',
+        tableName : 'chat',
         timestamps: false,
         indexes:[
             {fields:['id'], unique: true},
         ]
     }
 );
-    Chatroom.associate = (db) => {
-        Chatroom.belongsTo(db.Auth, {
+    Chat.associate = (db) => {
+        Chat.belongsTo(db.Auth, {
             foreignKey: 'authid',
             targetKey: 'id',
             onDelete: 'CASCADE',
         });
-        Chatroom.hasMany(db.ChatroomMember, {
-            foreignKey: 'chatroomid',
+        Chat.hasMany(db.ChatMember, {
+            foreignKey: 'chatid',
             sourceKey: 'id',
         })
     }
-    return Chatroom;
+    return Chat;
 }

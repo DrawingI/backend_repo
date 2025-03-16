@@ -60,11 +60,11 @@ module.exports = (sequelize, DataTypes) => {
             foreignKey : 'authid',
             sourceKey: 'id',
         });
-        Auth.hasMany(db.Chatroom, {
+        Auth.hasMany(db.Chat, {
             foreignKey: 'authid',
             sourceKey:'id',
         });
-        Auth.hasMany(db.ChatroomMember, {
+        Auth.hasMany(db.ChatMember, {
             foreignKey: 'authid',
             sourceKey:'id',
         })

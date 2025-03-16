@@ -19,6 +19,10 @@
     {
       "name": "아이관리",
       "description": "아이 등록, 아이 불러오기, 아이 공유 토큰 생성하기, 회원의 모든 아이 불러오기"
+    },
+    {
+      "name": "채팅",
+      "description": "채팅관리 api"
     }
   ],
   "schemes": [
@@ -346,6 +350,123 @@
           },
           "401": {
             "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/chat/findUsersToChat": {
+      "post": {
+        "tags": [
+          "채팅"
+        ],
+        "description": "채팅 참여 가능한 회원 불러오기",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "childid": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "419": {
+            "description": ""
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/chat/createChat": {
+      "post": {
+        "tags": [
+          "채팅"
+        ],
+        "description": "채팅방 만들기",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "any"
+                },
+                "childid": {
+                  "example": "any"
+                },
+                "userids": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "419": {
+            "description": ""
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/chat/findChats": {
+      "get": {
+        "tags": [
+          "채팅"
+        ],
+        "description": "회원이 참여하는 채팅방 불러오기",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "419": {
+            "description": ""
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }

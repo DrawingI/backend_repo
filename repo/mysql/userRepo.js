@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const db = require('../../database/mysql/models');
 const argon2 = require('argon2');
 
@@ -39,4 +40,14 @@ exports.findUserByEmail = async(email) => {
         }
     });
     return user;
+}
+
+exports.getUseridsByAuths = async(auths) => {
+    const userids = await db.User.findAll({
+        where: {
+            id: {[Op.in]: auths.map(auth=> auth.userid)},
+        },
+        attributes:["id"],
+    });
+    return userids;
 }
