@@ -11,6 +11,7 @@ const io = new Server(server, {
     cors: { origin: "*"}
 })
 const socketService = require('./service/socketService');
+const {jwtSocketMiddleware} = require('./middleware/jwtSocketMiddleware');
 
 //db연동
 const sequelize = require('./database/mysql/config/mysqlConfig.js');
@@ -32,6 +33,10 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+//socket.io 내부에서 처리되는 로직들을 불러오기
+const chatService = require('./service/chatService');
+const authService = require('./service/authService');
+
 //io를 app에 붙임
 app.set("io", io);
 
@@ -45,17 +50,21 @@ app.use('/chat', require('./routes/chatRoutes.js'));
 //RestfulAPI 테스트 경로 : 'http://localhost:5000/swagger'
 app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+//웹소켓에서 이벤트 이용하기 위한 사용자 jwt 인증 절차
+jwtSocketMiddleware(io);
+
 //Websocket
 io.on("connection", (socket) =>{
     console.log("✅ User connected: ", socket.id);
 
-    socket.on("login", (token) => {
-        socketService.addUserSocket(token, socket.id);
+    socket.on("login", () => {
+        socketService.addUserSocket(socket.user.id, socket.id);
     });
 
-    socket.on("getUserSocket", async (token) => {
+    //현재 회원의 소켓 id 가져오기
+    socket.on("getUserSocket", async () => {
         try{
-            const socketid = await socketService.getUserSocket(token); 
+            const socketid = await socketService.getUserSocket(socket.user.id); 
             socket.emit("getUserSocketResponse", {success : true, socketid});
         }catch(error){
             socket.emit("getUserSocketResponse", {success: false, message: "Error retrieving usser socketid"});
@@ -68,10 +77,20 @@ io.on("connection", (socket) =>{
         console.log("❌ User disconnected: ", socket.id);
     });
 
-    socket.on("enterChat", (chatid) => {
+    socket.on("enterChat", async (chatid) => {
         const roomid = chatid.toString();
-        socket.join(roomid);
-        console.log(`✅ User ${socket.id} joined room ${chatid}`);
+        const chatMembers = await chatService.getChatMembersByChatid(chatid);
+        const authids = chatMembers.map(chatMember => chatMember.authid);
+        const auths = await authService.getAuthsByAuthids(authids);
+        const userids = auths.map(auth => auth.userid);
+        
+        if(userids.includes(socket.user.id)){
+            socket.join(roomid);
+            console.log(`✅ User ${socket.id} joined room ${chatid}`);
+        }else{
+            socket.emit("enterChatResponse", {success : false, message: "User is not member of chat"});
+        }
+
 
         //현재 방에 속한 소켓 ID 목록 확인 (디버깅용)
         io.in(roomid).fetchSockets().then(sockets => {

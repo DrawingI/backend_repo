@@ -20,3 +20,10 @@ exports.getChatsByAuths = async(auths) => {
     return memberChats;
 }
 
+exports.getChatMembersByChatid = async(chatid) => {
+    const chatMembers = await db.ChatMember.findAll({
+        where:{chatid}
+    });
+    return chatMembers;
+}
+

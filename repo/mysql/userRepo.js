@@ -42,7 +42,7 @@ exports.findUserByEmail = async(email) => {
     return user;
 }
 
-exports.findUsersToChat = async(auths) => {
+exports.getUseridsByAuths = async(auths) => {
     const userids = await db.User.findAll({
         where: {
             id: {[Op.in]: auths.map(auth=> auth.userid)},

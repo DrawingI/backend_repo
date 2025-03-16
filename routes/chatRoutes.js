@@ -25,12 +25,4 @@ router.get('/findChats', loginJwt,
     */    
     chatController.findChats);
 
-router.post('/findChatMembers', loginJwt, 
-    /*  
-        #swagger.tags=['채팅']
-        #swagger.path="/chat/findChatMembers" 
-        #swagger.description='채팅방의 참여하는 회원 불러오기'
-    */    
-    chatController.findChatMembers);
-
 module.exports = router;

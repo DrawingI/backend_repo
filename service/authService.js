@@ -30,6 +30,11 @@ exports.getSomeAuthsByChildid = async(childid, userids) =>{
     return auths;
 }
 
+exports.getAuthsByAuthids = async(authids) =>{
+    const auths = await authRepo.getAuthsByAuthids(authids);
+    return auths;
+}
+
 exports.deleteAuth = async(childid, userid) =>{
     const deletedCount = await authRepo.deleteAuth(childid, userid);
     return deletedCount;

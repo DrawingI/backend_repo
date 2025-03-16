@@ -20,7 +20,7 @@ exports.findUserByEmail = async(email) => {
     return user;
 }
 
-exports.findUsersToChat = async(auths) => {
-    const userids = await userRepo.findUsersToChat(auths);
+exports.getUseridsByAuths = async(auths) => {
+    const userids = await userRepo.getUseridsByAuths(auths);
     return userids;
 }

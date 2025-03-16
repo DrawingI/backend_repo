@@ -10,7 +10,7 @@ exports.findUsersToChat = async(req, res) => {
         if(!auths){
             return res.status(401).json({message: "No users found for chatting"});
         }
-        const userids= await userService.findUsersToChat(auths);
+        const userids= await userService.getUseridsByAuths(auths);
         return res.status(200).json({message: "✅ Found users available for chat", userids});
     }catch(error){
         return res.status(500).json({message: "❌ Failed to find users for chatting", error: error.message});
@@ -57,14 +57,5 @@ exports.findChats = async(req, res) => {
         return res.status(500).json({message: "❌ Cannot bring chats for user", error: error.message});
     }
 }
-
-//채팅에 참여하고 있는 회원들 불러오기
-exports.findChatMembers = async(req, res) => {
-    const { chatid } = req.body;
-    const chatMembers = await chatService.findChatMembers(chatid);
-    
-
-}
-
 
 

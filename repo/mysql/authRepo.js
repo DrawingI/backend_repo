@@ -41,6 +41,15 @@ exports.getSomeAuthsByChildid = async(childid, userids) =>{
     return auths;
 }
 
+exports.getAuthsByAuthids = async(authids) => {
+    const auths = await db.Auth.findAll({
+        where : {
+            id: {[Op.in]: authids}
+        }
+    });
+    return auths;
+}
+
 exports.deleteAuth = async(childid, userid) =>{
     const deletedCount = await db.Auth.destroy({
         where: {childid: childid, userid: userid}
