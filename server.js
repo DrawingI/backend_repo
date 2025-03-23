@@ -78,30 +78,42 @@ io.on("connection", (socket) =>{
     });
 
     socket.on("enterChat", async (chatid) => {
-        const roomid = chatid.toString();
-        const chatMembers = await chatService.getChatMembersByChatid(chatid);
-        const authids = chatMembers.map(chatMember => chatMember.authid);
-        const auths = await authService.getAuthsByAuthids(authids);
-        const userids = auths.map(auth => auth.userid);
-        
-        if(userids.includes(socket.user.id)){
-            socket.join(roomid);
-            console.log(`✅ User ${socket.id} joined room ${chatid}`);
-        }else{
-            socket.emit("enterChatResponse", {success : false, message: "User is not member of chat"});
+        try{
+            const roomid = chatid.toString();
+            const chatMembers = await chatService.getChatMembersByChatid(chatid);
+            const authids = chatMembers.map(chatMember => chatMember.authid);
+            const auths = await authService.getAuthsByAuthids(authids);
+            const userids = auths.map(auth => auth.userid);
+            
+            if(userids.includes(socket.user.id)){
+                socket.join(roomid);
+                const messages = await chatService.bringMessages(chatid);
+                socket.emit("enterChatResponse", {success : true, messages});
+                console.log(`✅ User ${socket.id} joined room ${chatid}`);
+            }else{
+                socket.emit("enterChatResponse", {success : false, message: "User is not member of chat"});
+            }
+    
+            //현재 방에 속한 소켓 ID 목록 확인 (디버깅용)
+            io.in(roomid).fetchSockets().then(sockets => {
+                console.log(`🛠 Users in room ${roomid}:`, sockets.map(s => s.id));
+            });
+        }catch(error){
+            socket.emit("enterChatResponse", {success : false, message: error.message});
         }
-
-
-        //현재 방에 속한 소켓 ID 목록 확인 (디버깅용)
-        io.in(roomid).fetchSockets().then(sockets => {
-            console.log(`🛠 Users in room ${roomid}:`, sockets.map(s => s.id));
-        });
     });
 
-    socket.on("sendMessage", ({chatid, message}) => {
-        const roomid = chatid.toString();
-        console.log(`📩 Sending message to chat ${roomid}:`, message);
-        io.to(roomid).emit("receiveMessage", message);
+    socket.on("sendMessage", async({chatid, message}) => {
+        try{
+            const roomid = chatid.toString();
+            io.to(roomid).emit("receiveMessage", message);
+            const messageSaved = await chatService.saveMessage(chatid, socket.user.id, message);
+
+            console.log(`📩 Sending message to chat ${roomid}:`, message);
+            console.log(`Successfully saved Message`, messageSaved);
+        }catch(error){
+            socket.emit("sendMessageResponse", {success : false, message: error.message});
+        }
     });
 });
 
