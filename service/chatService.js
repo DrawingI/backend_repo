@@ -1,6 +1,7 @@
 const chatRepo = require('../repo/mysql/chatRepo');
 const chatMemberRepo = require('../repo/mysql/chatMemberRepo');
 const authService = require('../service/authService');
+const messageRepo = require('../repo/mongodb/messageRepo');
 
 //채팅방 생성
 exports.createChat = async(name, authid) => {
@@ -30,4 +31,15 @@ exports.getChatsByChatids = async(chatids) => {
 exports.getChatMembersByChatid = async(chatid) =>{
     const chatMembers = await chatMemberRepo.getChatMembersByChatid(chatid);
     return chatMembers;
+}
+
+//메시지를 채팅방(MongoDB)에 저장
+exports.saveMessage = async(chatroomId, userId, message) =>{
+    const messageSaved = await messageRepo.saveMessage(chatroomId, userId, message);
+    return messageSaved;
+}
+//채팅방 메시지들 불러오기기
+exports.bringMessages = async(chatroomId) => {
+    const messages = await messageRepo.bringMessages(chatroomId);
+    return messages;
 }
